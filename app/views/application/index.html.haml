@@ -1,0 +1,10 @@
+%h1
+  - total_count = WebResource.count
+  =number_with_delimiter(total_count)
+  Spending Data Files
+  =number_to_percentage(100.0 * total_count / total_count, :precision => 0)
+%h2
+  - not_found_count = WebResource.where('response_code = 404').count
+  =number_with_delimiter(not_found_count)
+  Not Found
+  =number_to_percentage(100.0 * not_found_count / total_count, :precision => 0)
