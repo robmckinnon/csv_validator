@@ -1,10 +1,35 @@
 %h1
-  - total_count = WebResource.count
-  =number_with_delimiter(total_count)
-  Spending Data Files
+  - total_count = WebResource.data_files.count
   =number_to_percentage(100.0 * total_count / total_count, :precision => 0)
+  Spending Data Files
+  =number_with_delimiter(total_count)
+
 %h2
-  - not_found_count = WebResource.where('response_code = 404').count
-  =number_with_delimiter(not_found_count)
-  Not Found
+  - parses_as_csv = WebResource.data_files.where('parses_as_csv is true').count
+  =number_to_percentage(100.0 * parses_as_csv / total_count, :precision => 0)
+  files parse as CSV
+  =number_with_delimiter(parses_as_csv)
+
+%h3
+  - has_essential_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_essential_headings}.size
+  =number_to_percentage(100.0 * has_essential_headings / total_count, :precision => 0)
+  files with all essential headers in first row
+  =number_with_delimiter(has_essential_headings)
+
+%h3
+  - no_standard_headers = WebResource.data_files.where('first_row is not null').select {|x| x.standard_headings_present.empty?}.size
+  =number_to_percentage(100.0 * no_standard_headers / total_count, :precision => 0)
+  files with no standard headers in first row
+  =number_with_delimiter(no_standard_headers)
+
+%h2
+  - parse_error = WebResource.data_files.where('parse_error is not null').count
+  =number_to_percentage(100.0 * parse_error / total_count, :precision => 0)
+  files with parse errors
+  =number_with_delimiter(parse_error)
+
+%h2
+  - not_found_count = WebResource.data_files.where('response_code = 404').count
   =number_to_percentage(100.0 * not_found_count / total_count, :precision => 0)
+  files not found
+  =number_with_delimiter(not_found_count)

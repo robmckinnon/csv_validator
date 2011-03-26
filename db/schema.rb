@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326121017) do
+ActiveRecord::Schema.define(:version => 20110326131127) do
 
   create_table "web_resources", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(:version => 20110326121017) do
     t.boolean  "blank_rows"
     t.text     "first_row"
     t.boolean  "headers_in_first_row"
+    t.string   "parse_error"
+    t.boolean  "parse_attempted"
   end
 
   add_index "web_resources", ["uri_md5"], :name => "index_web_resources_on_uri_md5"

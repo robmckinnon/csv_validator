@@ -15,3 +15,5 @@ doc
 log
 *.js
 data
+deploy.rb
+config/nginx
