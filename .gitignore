@@ -1,0 +1,17 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/
+bin
+config/auth.yml
+config/passenger
+.bundle
+vendor/bundler_gems
+test
+config/database.yml
+config/initializers/secret_token.rb
+.DS_Store
+doc
+log
+*.js
+data
