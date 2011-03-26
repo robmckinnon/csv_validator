@@ -1,0 +1,4 @@
+Check for:
+- parses as CSV
+- no blanks between rows
+- headers in first row
