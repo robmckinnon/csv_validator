@@ -3,4 +3,11 @@ class ApplicationController < ActionController::Base
 
   def index
   end
+
+  def agency_index
+  end
+
+  def org_index
+    @name = params[:name].gsub('_',' ').gsub('amp;','&')
+  end
 end

@@ -1,0 +1,100 @@
+- total_count = WebResource.data_files.count
+
+- all_parses_as_csv = WebResource.data_files.where('parses_as_csv is true')
+- parses_as_csv = all_parses_as_csv.count
+
+- with_essential_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_essential_headings}
+
+- has_essential_headings = with_essential_headings.size
+
+- with_no_standard_headers = WebResource.data_files.where('first_row is not null').select {|x| x.standard_headings_present.empty?}
+- no_standard_headers = with_no_standard_headers.size
+
+- with_some_essential_headings = all_parses_as_csv - with_essential_headings - with_no_standard_headers
+- some_essential_headings = with_some_essential_headings.size
+
+- with_parse_error = WebResource.data_files.where('parse_error is not null')
+- parse_error = with_parse_error.count
+- not_found = WebResource.data_files.where('response_code = 404')
+- not_found_count = not_found.count
+
+%h1
+  = @name
+  –
+  Spending Data Validation
+
+- if resources = with_essential_headings.group_by{|x| x.data_file.origin }[@name]
+  %h2
+    Good Data
+  %h3
+    All essential headers in first row
+    –
+    =number_with_delimiter(resources.size)
+    files
+
+  %ul
+    - resources.each do |resource|
+      %li
+        = link_to "#{display(resource)}", resource.uri
+
+- if resources = with_some_essential_headings.group_by{|x| x.data_file.origin }[@name]
+  %h2
+    Partial Data
+  %h3
+    Some essential headers in first row
+    –
+    =number_with_delimiter(resources.size)
+    files
+
+  %ul
+    - resources.each do |resource|
+      %li
+        = link_to "#{display(resource)}", resource.uri
+        –
+        missing fields:
+        = resource.missing_essential_headings.join(", ")
+
+- resources1 = with_no_standard_headers.group_by{|x| x.data_file.origin }[@name]
+- resources2 = with_parse_error.group_by{|x| x.data_file.origin }[@name]
+- resources3 = not_found.group_by{|x| x.data_file.origin }[@name]
+
+- if resources1 || resources2 || resources3
+  %h2
+    Bad Data
+
+  - if resources1
+    %h3
+      No standard headers in first row
+      –
+      =number_with_delimiter(resources1.size)
+      files
+
+    %ul
+      - resources1.each do |resource|
+        %li
+          = link_to "#{display(resource)}", resource.uri
+
+  - if resources2
+    %h3
+      Errors parsing file
+      –
+      =number_with_delimiter(resources2.size)
+      files
+
+    %ul
+      - resources2.each do |resource|
+        %li
+          = link_to "#{display(resource)}", resource.uri
+
+  - if resources3
+    %h3
+      File not found
+      –
+      =number_with_delimiter(resources3.size)
+      files
+
+    %ul
+      - resources3.each do |resource|
+        %li
+          = link_to "#{display(resource)}", resource.uri
+

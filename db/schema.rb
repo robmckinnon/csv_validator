@@ -10,7 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326131127) do
+ActiveRecord::Schema.define(:version => 20110326164320) do
+
+  create_table "data_files", :force => true do |t|
+    t.string   "domain"
+    t.text     "datagovuk_uri"
+    t.string   "title"
+    t.string   "agency"
+    t.string   "entity_from_title"
+    t.string   "spend_over"
+    t.string   "department"
+    t.integer  "web_resource_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "data_files", ["web_resource_id"], :name => "index_data_files_on_web_resource_id"
 
   create_table "web_resources", :force => true do |t|
     t.string   "name"

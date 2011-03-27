@@ -1,0 +1,93 @@
+- total_count = WebResource.data_files.count
+
+- all_parses_as_csv = WebResource.data_files.where('parses_as_csv is true')
+- parses_as_csv = all_parses_as_csv.count
+
+- with_essential_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_essential_headings}
+
+- has_essential_headings = with_essential_headings.size
+
+- with_no_standard_headers = WebResource.data_files.where('first_row is not null').select {|x| x.standard_headings_present.empty?}
+- no_standard_headers = with_no_standard_headers.size
+
+- with_some_essential_headings = all_parses_as_csv - with_essential_headings - with_no_standard_headers
+- some_essential_headings = with_some_essential_headings.size
+
+- with_parse_error = WebResource.data_files.where('parse_error is not null')
+- parse_error = with_parse_error.count
+- not_found = WebResource.data_files.where('response_code = 404')
+- not_found_count = not_found.count
+
+%h1
+  UK Government Spending Data Validator
+
+%h2
+  Good Data
+%h3
+  All essential headers in first row
+  –
+  =number_with_delimiter(has_essential_headings)
+  files
+
+%ul
+  - with_essential_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+    %li
+      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+
+%h2
+  Partial Data
+  –
+  =number_to_percentage(100.0 * some_essential_headings / total_count, :precision => 0)
+
+%h3
+  Some essential headers in first row
+  –
+  =number_with_delimiter(some_essential_headings)
+  files
+
+%ul
+  - with_some_essential_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+    %li
+      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+
+%h2
+  Bad Data
+  –
+  =number_to_percentage(100.0 * (no_standard_headers + parse_error + not_found_count) / total_count, :precision => 0)
+
+%h3
+  No standard headers in first row
+  –
+  =number_with_delimiter(no_standard_headers)
+  files
+  =number_to_percentage(100.0 * no_standard_headers / total_count, :precision => 0)
+
+%ul
+  - with_no_standard_headers.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+    %li
+      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+
+%h3
+  Errors parsing file
+  –
+  =number_with_delimiter(parse_error)
+  files
+  =number_to_percentage(100.0 * parse_error / total_count, :precision => 0)
+
+%ul
+  - with_parse_error.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+    %li
+      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+
+%h3
+  File not found
+  –
+  =number_with_delimiter(not_found_count)
+  files
+  =number_to_percentage(100.0 * not_found_count / total_count, :precision => 0)
+
+%ul
+  - not_found.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+    %li
+      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+

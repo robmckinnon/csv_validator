@@ -1,0 +1,15 @@
+body {
+  margin-top: 5%;
+  margin-left: 10%;
+  width: 59%;
+  font-family: sans-serif;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}

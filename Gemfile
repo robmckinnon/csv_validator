@@ -21,6 +21,15 @@ gem 'capistrano'
 gem 'haml'
 gem 'mysql'
 gem 'morph', '>= 0.3.2'
+
+gem 'rest-client'
+gem 'hpricot'
+gem 'nokogiri'
+gem 'ken'
+gem 'json'
+gem 'cmess'
+gem 'mechanize'
+
 gem 'fastercsv' unless (RUBY_VERSION >= "1.9")
 
 # gem 'bj'

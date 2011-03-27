@@ -1,12 +1,25 @@
+require 'digest/md5'
+
 class WebResource < ActiveRecord::Base
   validates_uniqueness_of :uri_md5, :allow_nil => false
 
+  has_one :data_file
     # remove_column :web_resources, :parses_as_csv
     # remove_column :web_resources, :blank_rows
     # remove_column :web_resources, :first_row
     # remove_column :web_resources, :headers_in_first_row
 
   scope :data_files, where("uri not like 'http://data.gov.uk/dataset/%'")
+
+  class << self
+    def find_from_uri uri
+      find_by_uri_md5 md5(uri)
+    end
+
+    def md5 text
+      Digest::MD5.hexdigest(text)
+    end
+  end
 
   def check_csv
     if file_path.nil? || file_path.include?('scraped/uk/gov/data/dataset')
@@ -35,6 +48,14 @@ class WebResource < ActiveRecord::Base
 
   def has_essential_headings
     ESSENTIAL_HEADINGS.select {|heading| !headings.include?(heading) }.empty?
+  end
+
+  def essential_headings_present
+    ESSENTIAL_HEADINGS.select {|heading| headings.include?(heading)}
+  end
+
+  def missing_essential_headings
+    ESSENTIAL_HEADINGS - essential_headings_present
   end
 
   def missing_standard_headings
