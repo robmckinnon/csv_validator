@@ -1,8 +1,8 @@
 - total_count = WebResource.data_files.count
 - parses_as_csv = WebResource.data_files.where('parses_as_csv is true').count
-- has_essential_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_essential_headings}.size
+- has_mandatory_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_mandatory_headings}.size
 - no_standard_headers = WebResource.data_files.where('first_row is not null').select {|x| x.standard_headings_present.empty?}.size
-- some_essential_headings = parses_as_csv - has_essential_headings - no_standard_headers
+- some_mandatory_headings = parses_as_csv - has_mandatory_headings - no_standard_headers
 - parse_error = WebResource.data_files.where('parse_error is not null').count
 - not_found_count = WebResource.data_files.where('response_code = 404').count
 
@@ -10,9 +10,9 @@
   UK Government Spending Data CSV Validator
 
 %h2
-  = link_to "Good Data", '/agency_index#good_data'
+  = link_to "Good Data", '/agencies#good_data'
   \-
-  =number_to_percentage(100.0 * has_essential_headings / total_count, :precision => 0)
+  =number_to_percentage(100.0 * has_mandatory_headings / total_count, :precision => 0)
 
 - if false
   %h3
@@ -21,24 +21,24 @@
     =number_with_delimiter(parses_as_csv)
 
 %h3{:style => 'color: #666;'}
-  All essential headers in first row
+  All mandatory headers in first row
   \-
-  =number_with_delimiter(has_essential_headings)
+  =number_with_delimiter(has_mandatory_headings)
   files
 
 %h2
-  = link_to "Partial Data", '/agency_index#partial_data'
+  = link_to "Partial Data", '/agencies#partial_data'
   \-
-  =number_to_percentage(100.0 * some_essential_headings / total_count, :precision => 0)
+  =number_to_percentage(100.0 * some_mandatory_headings / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
-  Some essential headers in first row
+  Some mandatory headers in first row
   \-
-  =number_with_delimiter(some_essential_headings)
+  =number_with_delimiter(some_mandatory_headings)
   files
 
 %h2
-  = link_to "Bad Data", '/agency_index#bad_data'
+  = link_to "Bad Data", '/agencies#bad_data'
   \-
   =number_to_percentage(100.0 * (no_standard_headers + parse_error + not_found_count) / total_count, :precision => 0)
 

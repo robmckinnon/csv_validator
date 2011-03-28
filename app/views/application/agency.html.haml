@@ -1,15 +1,15 @@
 - all_parses_as_csv = @web_resources.select {|x| x.parses_as_csv }
 - parses_as_csv = all_parses_as_csv.count
 
-- with_essential_headings = @web_resources.select {|x| !x.first_row.blank? }.select {|x| x.has_essential_headings}
+- with_mandatory_headings = @web_resources.select {|x| !x.first_row.blank? }.select {|x| x.has_mandatory_headings}
 
-- has_essential_headings = with_essential_headings.size
+- has_mandatory_headings = with_mandatory_headings.size
 
 - with_no_standard_headers = @web_resources.select {|x| !x.first_row.blank? }.select {|x| x.standard_headings_present.empty?}
 - no_standard_headers = with_no_standard_headers.size
 
-- with_some_essential_headings = all_parses_as_csv - with_essential_headings - with_no_standard_headers
-- some_essential_headings = with_some_essential_headings.size
+- with_some_mandatory_headings = all_parses_as_csv - with_mandatory_headings - with_no_standard_headers
+- some_mandatory_headings = with_some_mandatory_headings.size
 
 - with_parse_error = @web_resources.select {|x| !x.parse_error.blank? }
 - parse_error = with_parse_error.count
@@ -21,11 +21,11 @@
   \-
   Spending Data CSV Validation
 
-- if resources = with_essential_headings.group_by{|x| x.data_file.origin }[@name]
+- if resources = with_mandatory_headings.group_by{|x| x.data_file.origin }[@name]
   %h2
-    Good Data
+    = link_to "Good Data", '/agencies#good_data'
   %h3
-    All essential headers in first row
+    All mandatory headers in first row
     \-
     =number_with_delimiter(resources.size)
     files
@@ -35,11 +35,11 @@
       %li
         = link_to "#{display(resource)}", resource.uri
 
-- if resources = with_some_essential_headings.group_by{|x| x.data_file.origin }[@name]
+- if resources = with_some_mandatory_headings.group_by{|x| x.data_file.origin }[@name]
   %h2
-    Partial Data
+    = link_to "Partial Data", '/agencies#partial_data'
   %h3
-    Some essential headers in first row
+    Some mandatory headers in first row
     \-
     =number_with_delimiter(resources.size)
     files
@@ -50,7 +50,7 @@
         = link_to "#{display(resource)}", resource.uri
         %br
         missing fields:
-        = resource.missing_essential_headings.join(", ")
+        = resource.missing_mandatory_headings.join(", ")
 
 - resources1 = with_no_standard_headers.group_by{|x| x.data_file.origin }[@name]
 - resources2 = with_parse_error.group_by{|x| x.data_file.origin }[@name]
@@ -58,7 +58,7 @@
 
 - if resources1 || resources2 || resources3
   %h2
-    Bad Data
+    = link_to "Bad Data", '/agencies#bad_data'
 
   - if resources1
     %h3

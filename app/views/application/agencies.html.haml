@@ -3,15 +3,15 @@
 - all_parses_as_csv = WebResource.data_files.where('parses_as_csv is true')
 - parses_as_csv = all_parses_as_csv.count
 
-- with_essential_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_essential_headings}
+- with_mandatory_headings = WebResource.data_files.where('first_row is not null').select {|x| x.has_mandatory_headings}
 
-- has_essential_headings = with_essential_headings.size
+- has_mandatory_headings = with_mandatory_headings.size
 
 - with_no_standard_headers = WebResource.data_files.where('first_row is not null').select {|x| x.standard_headings_present.empty?}
 - no_standard_headers = with_no_standard_headers.size
 
-- with_some_essential_headings = all_parses_as_csv - with_essential_headings - with_no_standard_headers
-- some_essential_headings = with_some_essential_headings.size
+- with_some_mandatory_headings = all_parses_as_csv - with_mandatory_headings - with_no_standard_headers
+- some_mandatory_headings = with_some_mandatory_headings.size
 
 - with_parse_error = WebResource.data_files.where('parse_error is not null')
 - parse_error = with_parse_error.count
@@ -24,31 +24,31 @@
 %h2#good_data
   Good Data
 %h3
-  All essential headers in first row
+  All mandatory headers in first row
   \-
-  =number_with_delimiter(has_essential_headings)
+  =number_with_delimiter(has_mandatory_headings)
   files
 
 %ul
-  - with_essential_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+  - with_mandatory_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
     %li
-      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+      = link_to "#{origin} #{list.size}", agency_path(:name => clean(origin) )
 
 %h2#partial_data
   Partial Data
   \-
-  =number_to_percentage(100.0 * some_essential_headings / total_count, :precision => 0)
+  =number_to_percentage(100.0 * some_mandatory_headings / total_count, :precision => 0)
 
 %h3
-  Some essential headers in first row
+  Some mandatory headers in first row
   \-
-  =number_with_delimiter(some_essential_headings)
+  =number_with_delimiter(some_mandatory_headings)
   files
 
 %ul
-  - with_some_essential_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
+  - with_some_mandatory_headings.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
     %li
-      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+      = link_to "#{origin} #{list.size}", agency_path(:name => clean(origin) )
 
 %h2#bad_data
   Bad Data
@@ -65,7 +65,7 @@
 %ul
   - with_no_standard_headers.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
     %li
-      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+      = link_to "#{origin} #{list.size}", agency_path(:name => clean(origin) )
 
 %h3
   Errors parsing file as CSV
@@ -77,7 +77,7 @@
 %ul
   - with_parse_error.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
     %li
-      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+      = link_to "#{origin} #{list.size}", agency_path(:name => clean(origin) )
 
 %h3
   File not found
@@ -89,7 +89,7 @@
 %ul
   - not_found.group_by{|x| x.data_file.origin }.to_a.sort {|a,b| b[1].size <=> a[1].size}.each do |origin, list|
     %li
-      = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
+      = link_to "#{origin} #{list.size}", agency_path(:name => clean(origin) )
 
 %p{:style => 'font-size: 0.8em; margin-top: 5em;'}
   Built by

@@ -42,20 +42,20 @@ class WebResource < ActiveRecord::Base
     nil
   end
 
-  ESSENTIAL_HEADINGS = ["department family", "entity", "date", "expense type", "expense area", "supplier", "transaction number", "amount"]
+  MANDATORY_HEADINGS = ["department family", "entity", "date", "expense type", "expense area", "supplier", "transaction number", "amount"]
 
-  STANDARD_HEADINGS = ESSENTIAL_HEADINGS + ["vat registration number", "invoice number"]
+  STANDARD_HEADINGS = MANDATORY_HEADINGS + ["vat registration number", "invoice number"]
 
-  def has_essential_headings
-    ESSENTIAL_HEADINGS.select {|heading| !headings.include?(heading) }.empty?
+  def has_mandatory_headings
+    MANDATORY_HEADINGS.select {|heading| !headings.include?(heading) }.empty?
   end
 
-  def essential_headings_present
-    ESSENTIAL_HEADINGS.select {|heading| headings.include?(heading)}
+  def mandatory_headings_present
+    MANDATORY_HEADINGS.select {|heading| headings.include?(heading)}
   end
 
-  def missing_essential_headings
-    ESSENTIAL_HEADINGS - essential_headings_present
+  def missing_mandatory_headings
+    MANDATORY_HEADINGS - mandatory_headings_present
   end
 
   def missing_standard_headings

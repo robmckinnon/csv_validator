@@ -7,13 +7,13 @@ class ApplicationController < ActionController::Base
   def index
   end
 
-  def agency_index
+  def agencies
   end
 
   def methodology
   end
 
-  def org_index
+  def agency
     @name = params[:name].gsub('_',' ').gsub('amp;','&')
     @data_files = DataFile.where("origin = '#{@name}'").all
     @web_resources = @data_files.map(&:web_resource).select {|x| !x.file_path.include?('scraped/uk/gov/data/dataset') }

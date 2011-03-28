@@ -29,13 +29,13 @@
         %li Amount
     %li{:style=>'margin-bottom: 0.4em;'}
       Files that are not found, cannot be parsed as CSV, don't have headers in first row, or are missing all mandatory headers are listed as
-      = link_to('bad data', '/agency_index#bad_data') + '.'
+      = link_to('bad data', '/agencies#bad_data') + '.'
     %li{:style=>'margin-bottom: 0.4em;'}
       Files with only some of the mandatory headers are listed as
-      = link_to('partial data', '/agency_index#partial_data') + '.'
+      = link_to('partial data', '/agencies#partial_data') + '.'
     %li{:style=>'margin-bottom: 0.4em;'}
       Files with all mandatory headers in the first row are listed as
-      = link_to('good data', '/agency_index#good_data') + '.'
+      = link_to('good data', '/agencies#good_data') + '.'
 
 
 %p{:style => 'font-size: 0.8em; margin-top: 5em;'}
