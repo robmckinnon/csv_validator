@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
+
   protect_from_forgery
+
+  caches_page :index, :agency_index, :org_index unless (Rails.env.test? || Rails.env.development?)
 
   def index
   end
@@ -9,5 +12,7 @@ class ApplicationController < ActionController::Base
 
   def org_index
     @name = params[:name].gsub('_',' ').gsub('amp;','&')
+    @data_files = DataFile.where("origin = '#{@name}'").all
+    @web_resources = @data_files.map(&:web_resource)
   end
 end

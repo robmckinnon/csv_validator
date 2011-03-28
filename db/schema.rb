@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326164320) do
+ActiveRecord::Schema.define(:version => 20110328151514) do
 
   create_table "data_files", :force => true do |t|
     t.string   "domain"
@@ -23,8 +23,10 @@ ActiveRecord::Schema.define(:version => 20110326164320) do
     t.integer  "web_resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "origin"
   end
 
+  add_index "data_files", ["origin"], :name => "index_data_files_on_origin"
   add_index "data_files", ["web_resource_id"], :name => "index_data_files_on_web_resource_id"
 
   create_table "web_resources", :force => true do |t|

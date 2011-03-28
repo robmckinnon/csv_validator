@@ -10,8 +10,8 @@
   UK Government Spending Data Validator
 
 %h2
-  Good Data
-  –
+  = link_to "Good Data", '/agency_index#good_data'
+  \-
   =number_to_percentage(100.0 * has_essential_headings / total_count, :precision => 0)
 
 - if false
@@ -22,44 +22,49 @@
 
 %h3{:style => 'color: #666;'}
   All essential headers in first row
-  –
+  \-
   =number_with_delimiter(has_essential_headings)
   files
 
 %h2
-  Partial Data
-  –
+  = link_to "Partial Data", '/agency_index#partial_data'
+  \-
   =number_to_percentage(100.0 * some_essential_headings / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
   Some essential headers in first row
-  –
+  \-
   =number_with_delimiter(some_essential_headings)
   files
 
 %h2
-  Bad Data
-  –
+  = link_to "Bad Data", '/agency_index#bad_data'
+  \-
   =number_to_percentage(100.0 * (no_standard_headers + parse_error + not_found_count) / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
   No standard headers in first row
-  –
+  \-
   =number_with_delimiter(no_standard_headers)
   files
   =number_to_percentage(100.0 * no_standard_headers / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
   Errors parsing file
-  –
+  \-
   =number_with_delimiter(parse_error)
   files
   =number_to_percentage(100.0 * parse_error / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
   File not found
-  –
+  \-
   =number_with_delimiter(not_found_count)
   files
   =number_to_percentage(100.0 * not_found_count / total_count, :precision => 0)
 
+%p{:style => 'font-size: 0.8em; margin-top: 5em;'}
+  Built by
+  = link_to '@delineator', 'http://twitter.com/delineator'
+  at Rewired State
+  = link_to '#nhtg11', 'http://rewiredstate.org/projects/government-spending-data-validation-service'
