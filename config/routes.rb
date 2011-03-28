@@ -51,6 +51,7 @@ CsvValidator::Application.routes.draw do
   root :to => "application#index"
   match 'agency_index' => "application#agency_index", :as => :agency_index
   match 'org_index/:name' => "application#org_index", :as => :org_index
+  match 'methodology' => "application#methodology", :as => :methodology
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,0 +1,45 @@
+%h1
+  UK Government Spending Data CSV Validator
+
+%p{:style => 'margin-top: 5em;'}
+  The service works by:
+  %ol
+    %li{:style=>'margin-bottom: 0.4em;'}
+      <strong>Finding</strong>
+      = link_to 'spending files', 'http://data.gov.uk/search/apachesolr_search/spend%20over?filters=type:ckan_package'
+      linked to directly from the data.gov.uk website.
+    %li{:style=>'margin-bottom: 0.4em;'}
+      <strong>Downloading</strong> each file.
+    %li{:style=>'margin-bottom: 0.4em;'}
+      <strong>Parsing</strong> the file as CSV - section 2.26 of the
+      = link_to 'HMT Guidance', 'http://www.hm-treasury.gov.uk/d/government_spend280211.pdf'
+      states files must be in CSV format.
+    %li{:style=>'margin-bottom: 0.4em;'}
+      <strong>Checking</strong> mandatory headers are present in the first row - the
+      = link_to 'HMT Guidance', 'http://www.hm-treasury.gov.uk/d/government_spend280211.pdf'
+      states the mandatory fields are:
+      %ul{:style=>'margin-top: 0.4em;'}
+        %li Department family
+        %li Entity
+        %li Date
+        %li Expense type
+        %li Expense area
+        %li Supplier
+        %li Transaction number
+        %li Amount
+    %li{:style=>'margin-bottom: 0.4em;'}
+      Files that are not found, cannot be parsed as CSV, don't have headers in first row, or are missing all mandatory headers are listed as
+      = link_to('bad data', '/agency_index#bad_data') + '.'
+    %li{:style=>'margin-bottom: 0.4em;'}
+      Files with only some of the mandatory headers are listed as
+      = link_to('partial data', '/agency_index#partial_data') + '.'
+    %li{:style=>'margin-bottom: 0.4em;'}
+      Files with all mandatory headers in the first row are listed as
+      = link_to('good data', '/agency_index#good_data') + '.'
+
+
+%p{:style => 'font-size: 0.8em; margin-top: 5em;'}
+  Built by
+  = link_to '@delineator', 'http://twitter.com/delineator'
+  at Rewired State
+  = link_to '#nhtg11', 'http://rewiredstate.org/projects/government-spending-data-validation-service'
