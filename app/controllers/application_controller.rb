@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  caches_page :index, :agency_index, :org_index unless (Rails.env.test? || Rails.env.development?)
+  caches_page :index, :agencies, :agency unless (Rails.env.test? || Rails.env.development?)
 
   def index
   end
