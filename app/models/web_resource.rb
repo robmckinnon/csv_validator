@@ -27,6 +27,7 @@ class WebResource < ActiveRecord::Base
     else
       begin
         puts file_path
+        update_attribute(:parse_error, nil)
         update_attribute(:parse_attempted, true)
         first_row = false
         FasterCSV.foreach(file_path) do |row|
