@@ -7,7 +7,7 @@
 - not_found_count = WebResource.data_files.where('response_code = 404').count
 
 %h1
-  UK Government Spending Data Validator
+  UK Government Spending Data CSV Validator
 
 %h2
   = link_to "Good Data", '/agency_index#good_data'
@@ -50,7 +50,7 @@
   =number_to_percentage(100.0 * no_standard_headers / total_count, :precision => 0)
 
 %h3{:style => 'color: #666;'}
-  Errors parsing file
+  Errors parsing file as CSV
   \-
   =number_with_delimiter(parse_error)
   files

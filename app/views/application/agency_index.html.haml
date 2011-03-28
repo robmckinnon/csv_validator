@@ -19,7 +19,7 @@
 - not_found_count = not_found.count
 
 %h1
-  UK Government Spending Data Validator
+  UK Government Spending Data CSV Validator
 
 %h2#good_data
   Good Data
@@ -68,7 +68,7 @@
       = link_to "#{origin} #{list.size}", org_index_path(:name => clean(origin) )
 
 %h3
-  Errors parsing file
+  Errors parsing file as CSV
   \-
   =number_with_delimiter(parse_error)
   files

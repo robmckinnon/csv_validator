@@ -19,7 +19,7 @@
 %h1
   = @name
   \-
-  Spending Data Validation
+  Spending Data CSV Validation
 
 - if resources = with_essential_headings.group_by{|x| x.data_file.origin }[@name]
   %h2
@@ -46,9 +46,9 @@
 
   %ul
     - resources.each do |resource|
-      %li
+      %li{:style=>'margin-bottom: 0.5em;'}
         = link_to "#{display(resource)}", resource.uri
-        \-
+        %br
         missing fields:
         = resource.missing_essential_headings.join(", ")
 
@@ -74,15 +74,18 @@
 
   - if resources2
     %h3
-      Errors parsing file
+      Errors parsing file as CSV
       \-
       =number_with_delimiter(resources2.size)
       files
 
     %ul
       - resources2.each do |resource|
-        %li
+        %li{:style=>'margin-bottom: 0.5em;'}
           = link_to "#{display(resource)}", resource.uri
+          %br
+          error message:
+          = resource.parse_error
 
   - if resources3
     %h3

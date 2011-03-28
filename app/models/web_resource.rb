@@ -63,7 +63,7 @@ class WebResource < ActiveRecord::Base
   end
 
   def headings
-    eval(first_row.downcase)
+    eval(first_row.downcase.strip)
   end
 
   def standard_headings_present
