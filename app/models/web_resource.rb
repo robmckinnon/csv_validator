@@ -4,10 +4,6 @@ class WebResource < ActiveRecord::Base
   validates_uniqueness_of :uri_md5, :allow_nil => false
 
   has_one :data_file
-    # remove_column :web_resources, :parses_as_csv
-    # remove_column :web_resources, :blank_rows
-    # remove_column :web_resources, :first_row
-    # remove_column :web_resources, :headers_in_first_row
 
   scope :data_files, where("uri not like 'http://data.gov.uk/dataset/%'")
 
@@ -64,7 +60,7 @@ class WebResource < ActiveRecord::Base
   end
 
   def headings
-    eval(first_row.downcase.strip)
+    eval(first_row.downcase).collect {|x| x.is_a?(String) ? x.gsub("\n",' ').gsub("\r",' ').squeeze(' ').strip : x}
   end
 
   def standard_headings_present

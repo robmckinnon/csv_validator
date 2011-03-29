@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  caches_page :index, :agencies, :agency unless (Rails.env.test? || Rails.env.development?)
+  caches_page :index, :agencies, :agency, :methodology unless (Rails.env.test? || Rails.env.development?)
 
   def index
   end
@@ -16,6 +16,6 @@ class ApplicationController < ActionController::Base
   def agency
     @name = params[:name].gsub('_',' ').gsub('amp;','&')
     @data_files = DataFile.where("origin = '#{@name}'").all
-    @web_resources = @data_files.map(&:web_resource).select {|x| !x.file_path.include?('scraped/uk/gov/data/dataset') }
+    @web_resources = @data_files.map(&:web_resource).select {|x| x.file_path.nil? || !x.file_path.include?('scraped/uk/gov/data/dataset') }
   end
 end
